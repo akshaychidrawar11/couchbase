@@ -14,7 +14,7 @@ public class CouchBaseMultiThreadProgram {
 
     private static final String COUCHBASE_CONNECTION_STRING = "couchbase://127.0.0.1";
     private static final String COUCHBASE_USERNAME = "Administrator";
-    private static final String COUCHBASE_PASSWORD = "Anvit@#123";
+    private static final String COUCHBASE_PASSWORD = "Anvit@#123";//we can encrypt and decrypt in real time
     private static final String BUCKET_NAME = "sampleTestBucket";
     private static final String REGION_NAME = "sampleScope";
     private static final String COLLECTION_NAME = "sampleCollection";
@@ -29,13 +29,9 @@ public class CouchBaseMultiThreadProgram {
         ExecutorService executor = Executors.newFixedThreadPool(NUM_THREADS);
         System.out.println("Start time : " + System.currentTimeMillis());
         for (int i = 0; i < NUM_THREADS; i++) {
-            executor.submit(() -> performCouchbaseOperations(bucket));
+            executor.submit(() -> doCouchbaseActions(bucket));
         }
-        try {
-            Thread.sleep(3 * 60 * 1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
         executor.shutdown();
         try {
             executor.awaitTermination(3, TimeUnit.MINUTES);
@@ -49,7 +45,7 @@ public class CouchBaseMultiThreadProgram {
      * read json data from file location and insert/read from couchbase
      * @param bucket bucket of couchbase
      */
-    private static void performCouchbaseOperations(Bucket bucket) {
+    private static void doCouchbaseActions(Bucket bucket) {
         long endTime = System.currentTimeMillis() + 3 * 60 * 1000; // 3 minutes
         Long threadId = Thread.currentThread().getId();
           while (System.currentTimeMillis() < endTime) {
@@ -63,6 +59,9 @@ public class CouchBaseMultiThreadProgram {
                 for (int i = 0; i < 3; i++) {
                     readJsonData(key, collection, threadId);
                 }
+
+             //   Thread.sleep(1000);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
