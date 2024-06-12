@@ -43,8 +43,8 @@ public class CouchBaseMultiThreadProgram {
 
     /**
      * read json data from file location and insert/read from couchbase
-     * @param bucket
-     * @param endTime
+     * @param bucket bucket of couchbase
+     * @param endTime end time of program
      */
     private static void performCouchbaseOperations(Bucket bucket,Long  endTime) {
           while (System.currentTimeMillis() < endTime) {
@@ -68,9 +68,9 @@ public class CouchBaseMultiThreadProgram {
 
     /**
      * perform read operation from couchbase
-     * @param key
-     * @param collection
-     * @param threadId
+     * @param key : key of couchbase where data will be inserted/fetched
+     * @param collection : collection from couchbase
+     * @param threadId : thread id for logging
      */
     private static void readJsonData(String key, Collection collection, Long threadId) {
         long startTime;
@@ -83,10 +83,10 @@ public class CouchBaseMultiThreadProgram {
 
     /**
      * perform write/insert operation
-     * @param key
-     * @param collection
-     * @param jsonObject
-     * @param threadId
+     * @param key key of couchbase where data will be inserted/fetched
+     * @param collection collection from couchbase
+     * @param jsonObject input data
+     * @param threadId  thread id for logging
      */
     private static void insertJsonData(String key, Collection collection, JsonObject jsonObject, Long threadId) {
         long startTime = System.nanoTime();
