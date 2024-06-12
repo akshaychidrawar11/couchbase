@@ -68,7 +68,7 @@ public class CouchBaseMultiThreadProgram {
 
     /**
      * perform read operation from couchbase
-     * @param key : key of couchbase where data will be inserted/fetched
+     * @param key : key of couchbase where data will be fetched
      * @param collection : collection from couchbase
      * @param threadId : thread id for logging
      */
@@ -83,7 +83,7 @@ public class CouchBaseMultiThreadProgram {
 
     /**
      * perform write/insert operation
-     * @param key key of couchbase where data will be inserted/fetched
+     * @param key key of couchbase where data will be inserted
      * @param collection collection from couchbase
      * @param jsonObject input data
      * @param threadId  thread id for logging
