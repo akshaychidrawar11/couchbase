@@ -24,13 +24,17 @@ public class CouchBaseMultiThreadProgram {
 
         Cluster cluster = Cluster.connect(COUCHBASE_CONNECTION_STRING, COUCHBASE_USERNAME, COUCHBASE_PASSWORD);
         Bucket bucket = cluster.bucket(BUCKET_NAME);
-        final int NUM_THREADS = 2;// Different thread pool sizes for testing
+        final int NUM_THREADS = 4;// Different thread pool sizes for testing
         System.out.println("Testing with thread pool size: " + NUM_THREADS);
         ExecutorService executor = Executors.newFixedThreadPool(NUM_THREADS);
-        long endTime = System.currentTimeMillis() + 3 * 60 * 1000; // 3 minutes
         System.out.println("Start time : " + System.currentTimeMillis());
         for (int i = 0; i < NUM_THREADS; i++) {
-            executor.submit(() -> performCouchbaseOperations(bucket, endTime));
+            executor.submit(() -> performCouchbaseOperations(bucket));
+        }
+        try {
+            Thread.sleep(3 * 60 * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
         executor.shutdown();
         try {
@@ -44,9 +48,10 @@ public class CouchBaseMultiThreadProgram {
     /**
      * read json data from file location and insert/read from couchbase
      * @param bucket bucket of couchbase
-     * @param endTime end time of program
      */
-    private static void performCouchbaseOperations(Bucket bucket,Long  endTime) {
+    private static void performCouchbaseOperations(Bucket bucket) {
+        long endTime = System.currentTimeMillis() + 3 * 60 * 1000; // 3 minutes
+        Long threadId = Thread.currentThread().getId();
           while (System.currentTimeMillis() < endTime) {
             try {
                 String key = "aktest3";//key value we can change
@@ -54,7 +59,6 @@ public class CouchBaseMultiThreadProgram {
                 Collection collection = bucket.scope(REGION_NAME).collection(COLLECTION_NAME);
                 String jsonContent = new String(Files.readAllBytes(jsonFile.toPath()));
                 JsonObject jsonObject = JsonObject.fromJson(jsonContent);
-                Long threadId = Thread.currentThread().getId();
                 insertJsonData(key, collection, jsonObject, threadId);
                 for (int i = 0; i < 3; i++) {
                     readJsonData(key, collection, threadId);
