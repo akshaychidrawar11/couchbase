@@ -1,2 +1,2 @@
 # couchbase
-This a smaple proejct for performanc eobservation with couchbase multithreaded access
+This a smaple project for performanc eobservation with couchbase multithreaded access
